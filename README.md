@@ -65,10 +65,6 @@ The project rigorously tested three primary deep learning architectures:
 | File | Description | 
 | ----- | ----- | 
 | `Time_Series_Forecasting.ipynb` | Main Jupyter Notebook containing all data loading, SARIMA analysis, deep learning model training, and evaluation. | 
-| `dataset_pipeline.py` | Python script containing the `create_multi_step_dataset` function, which is critical for generating the (X: 12, Y: 12) pairs. | 
-| `linear_multistep.py` | Keras definition for the Linear Model baseline (Seq2Vec, 12 outputs). | 
-| `gru_seq2vec_12_step.py` | Keras definition for the GRU model that failed the multi-step test (Seq2Vec, 12 outputs). | 
-| `rnn_report.md` | Detailed analysis of the SimpleRNN performance. | 
 
 ## Dependencies
 
