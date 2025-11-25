@@ -57,8 +57,6 @@ The project rigorously tested three primary deep learning architectures:
 
 * **Success:** This structure eliminated the bottleneck by allowing the GRU to output a hidden state for every step, mapping each one to a corresponding output prediction. This validated the GRU's effectiveness in a proper sequential forecasting setup. 
 
-[Image of Sequence-to-Sequence Encoder-Decoder architecture]
-
 
 ## Project Files
 
