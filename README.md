@@ -1,4 +1,5 @@
 # Time Series Forecasting: Global Land Surface Temperature
+**Author:** Kushal Kharel  
 
 ## Project Overview
 
