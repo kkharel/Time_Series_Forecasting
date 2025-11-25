@@ -2,15 +2,7 @@
 
 ## Project Overview
 
-This project implements and critically compares both traditional statistical methods (SARIMA) and modern deep learning architectures (RNN, GRU) for forecasting the **Global Average Land Surface Temperature**.
-
-The core objective was twofold:
-
-1. Establish the most accurate model for **1-step-ahead prediction**.
-
-2. Identify the optimal deep learning architecture for a challenging **12-step direct multi-step forecast**.
-
-The data was first pre-processed using **differencing and scaling** to ensure stationarity, which is critical for model stability.
+This project implements and critically compares both traditional statistical methods ($\text{SARIMA}$) and modern deep learning architectures ($\text{RNN}$, $\text{GRU}$) for forecasting the Global Average Land Surface Temperature.The core objective was to perform a definitive, standardized 12-step forecast comparison, testing two major deep learning strategies:Recursive Multi-Step Forecasting: Training a model for one step and recursively rolling its prediction forward for 12 steps.Direct Multi-Output Forecasting (Seq2Seq): Training a model to predict all 12 steps simultaneously.The time series was first pre-processed using differencing and scaling to ensure stationarity, which is critical for model stability
 
 ## Key Findings Summary
 
