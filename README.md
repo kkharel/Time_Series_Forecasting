@@ -58,6 +58,7 @@ For deep learning:
 - **Direct Multi-Step (Seq2Seq)** > **Recursive (Seq2Vec)**
 - GRU achieves its best results only when implemented within a full **Encoder–Decoder** sequence model.
 
+The GRU's Residual MAE of 0.3393 is higher than the Naive Residual MAE of 0.274, indicating that the GRU is currently performing worse than simply assuming no change in temperature.
 ---
 
 ## Model Performance Summary (Mean Absolute Error)
