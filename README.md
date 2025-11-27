@@ -65,14 +65,15 @@ For deep learning:
 | Model Type     | Architecture               | Prediction Method            | 12-Step MAE | Performance Ranking |
 |----------------|----------------------------|------------------------------|-------------|----------------------|
 | Classical      | Manual ARIMA               | Direct (Statistical)         | **0.2081**  | **1st (Best)**       |
-| Classical      | Auto ARIMA                 | Direct (Statistical)         | 0.2923      | 2nd                  |
-| Deep Learning  | GRU (Encoder-Decoder)      | Direct Multi-Step (Seq2Seq)  | 0.3380      | 3rd (Best DL)        |
-| Deep Learning  | GRU (Simple Seq2Seq)       | Direct Multi-Step            | 0.3475      | 4th                  |
-| Deep Learning  | Simple RNN (Recursive)     | Recursive (Seq2Vec)          | 0.3492      | 5th                  |
-| Deep Learning  | Linear NN                  | Recursive (Seq2Vec)          | 0.3530      | 6th                  |
-| Deep Learning  | Simple RNN (Simple Seq2Seq)| Direct Multi-Step            | 0.3594      | 7th                  |
-| Baseline       | Naive Forecast             | Direct                       | 0.3867      | 8th                  |
-| Deep Learning  | GRU (Recursive)            | Recursive (Seq2Vec)          | 0.4270      | **9th (Worst)**      |
+| Baseline       | Naive Forecast             | Direct                       | 0.2740      | 2nd                  |
+| Classical      | Auto ARIMA                 | Direct (Statistical)         | 0.2923      | 3rd                  |
+| Deep Learning  | GRU (Encoder-Decoder)      | Direct Multi-Step (Seq2Seq)  | 0.3393      | 4th (Best DL)        |
+| Deep Learning  | Simple RNN (Recursive)     | Recursive (Seq2Vec)          | 0.3434      | 5th                  |
+| Deep Learning  | Linear NN (Seq2Seq)        | Direct Multi-Step            | 0.3513      | 6th                  |
+| Deep Learning  | Linear NN                  | Recursive (Seq2Vec)          | 0.3531      | 7th                  |
+| Deep Learning  | Simple RNN (Simple Seq2Seq)| Direct Multi-Step            | 0.3557      | 8th                  |
+| Deep Learning  | GRU (Recursive)            | Recursive (Seq2Vec)          | 0.3674      | 9th                  |
+| Deep Learning  | GRU (Simple Seq2Seq)       | Direct Multi-Step            | 0.3839      | **10th (worst)**     |
 
 ---
 
@@ -101,12 +102,12 @@ A fixed input window of **12 months** was used for all deep learning models to m
 Train the model for `Y[t+1]`, feed prediction back for steps `t+2` to `t+12`.
 
 **Result:**  
-- **Best recursive model:** Simple RNN (MAE: 0.3492)  
+- **Best recursive model:** Simple RNN 
 - Simpler architectures reduce compounding error.
 
 ---
 
-### B. Direct Multi-Output (Simple Seq2Seq)
+### B. Direct Multi-Output GRU (Simple Seq2Seq)
 
 **Architecture:**
 
@@ -127,7 +128,7 @@ GRU → GRU → TimeDistributed(Dense(1))
 **Success:**  
 - Eliminated the bottleneck  
 - Enabled step-specific prediction  
-- Achieved **best deep learning performance (MAE: 0.3380)**
+- Achieved **best deep learning performance (MAE: 0.3393)**
 
 ---
 
