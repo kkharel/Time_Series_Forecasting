@@ -1,161 +1,107 @@
 # Time Series Forecasting: Global Land Surface Temperature
+
 **Author:** Kushal Kharel  
 
 ## Project Overview
 
-This project implements and critically compares both traditional statistical methods (**SARIMA**) and modern deep learning architectures (**RNN**, **GRU**) for forecasting the Global Average Land Surface Temperature.
+This project rigorously evaluates classical statistical and modern deep learning approaches for forecasting Global Land Surface Temperature. The primary goal was a **standardized comparison of 12-step forecast strategies**, across multiple architectures and feature representations.
 
-The core objective was to perform a definitive, standardized **12-step forecast comparison**, rigorously evaluating two multi-step forecasting strategies:
+Two multi-step forecasting strategies were tested:
 
-### 1. Recursive Multi-Step Forecasting
-A model predicts one step ahead and its output is recursively fed back into the model for 12 total steps.
+1. **Recursive Multi-Step Forecasting (Seq2Vec)**  
+   Predicts one step ahead recursively, feeding each prediction into the next step.  
 
-### 2. Direct Multi-Output Forecasting (Seq2Seq)
-A model predicts all 12 steps simultaneously in a single forward pass.
+2. **Direct Multi-Output Forecasting (Seq2Seq)**  
+   Predicts all 12 steps simultaneously in a single forward pass, capturing horizon-wide dependencies.
 
-The time series was pre-processed using **differencing and scaling** to ensure stationarity—critical for stable model training.
-
----
-
-## Key Findings Summary
-
-### 1. Statistical Dominance
-
-**Manual ARIMA (MAE: 0.2081)** is the overall best model.  
-For seasonal, stationary, and well-structured time series, a well-tuned classical method still outperforms deep learning models.  
-The benchmark MAE of **0.2081** was unmatched by any neural network architecture.
+The time series was pre-processed using **differencing** to remove trend and seasonality, followed by **MinMax scaling**. Seasonal features (sine and cosine of month) were included in multivariate experiments.
 
 ---
 
-### 2. Validating the Direct Multi-Step Approach
+## Key Insights
 
-Removing compounding error significantly improved deep learning performance:
+### 1. Single-Step Forecasting
+- **Manual ARIMA (MAE: 0.2081)** is the most accurate single-step model.  
+- Linear regression and naive forecasts remain competitive due to strong autocorrelation and seasonality.  
+- Deep learning models trained recursively (RNN/GRU) slightly underperform, as differencing removes the long-term dependencies that GRUs are designed to capture.
 
-- **GRU Encoder–Decoder (MAE: 0.3380)** is the best deep learning model.  
-- Predicting all 12 steps at once reduces error accumulation.
-- **GRU (Simple Seq2Seq) ** performed the worst, suffering from information bottleneck.
+### 2. Multi-Step Direct Forecasting
+- **GRU models (encoder-decoder and last hidden state)** outperform RNNs and linear models for 12-step forecasts.  
+- Surprisingly, multi-step GRUs slightly outperform single-step GRUs because direct multi-step training **reduces cumulative error** and captures joint temporal dependencies.  
+- Simple RNNs remain competitive, showing that simpler recurrent architectures effectively model short-to-medium horizon sequences.
+
+### 3. Multivariate Features Provide Incremental Gains
+- Including **sine and cosine seasonal features** improves multi-step forecast performance for GRU models.  
+- The multivariate encoder-decoder GRU achieved the **best overall deep learning MAE** (0.3353), slightly better than its univariate counterpart.
+
+### 4. Linear Models vs Neural Networks
+- Linear models perform adequately for single-step predictions but are less effective for multi-step forecasting.  
+- Neural networks, especially GRUs, can model nonlinear interactions across multiple steps, improving accuracy on direct 12-step forecasts.
 
 ---
 
-### 3. Complexity Finally Pays Off
+## Model Performance Summary (Mean Absolute Error)
 
-- GRU Encoder–Decoder (0.3380) outperformed all simpler RNN variants.
-- Stacking two GRU layers with `return_sequences=True` preserved temporal patterns more effectively.
-- This avoided the bottleneck created by Dense(12) output heads used in simpler Seq2Seq models.
+| Model Type         | Architecture                                | Prediction Method            | MAE        | Notes |
+|-------------------|---------------------------------------------|-----------------------------|------------|-------|
+| Classical          | Manual ARIMA                                | Single-Step                 | **0.2081** | Best overall |
+| Baseline           | Naive Forecast                               | Single-Step                 | 0.2740     | Strong simple baseline |
+| Classical          | Auto ARIMA                                   | Single-Step                 | 0.2923     | Statistical baseline |
+| Deep Learning      | GRU (Encoder–Decoder, univariate)           | Multi-Step Direct (12-step) | 0.3363     | Captures horizon dependencies |
+| Deep Learning      | GRU (Encoder–Decoder, multivariate)         | Multi-Step Direct (12-step) | 0.3353     | Best DL with seasonal features |
+| Deep Learning      | GRU (Last Hidden State)                     | Multi-Step Direct (12-step) | 0.3359     | Comparable to encoder-decoder |
+| Deep Learning      | Simple RNN (Last Hidden State)              | Multi-Step Direct (12-step) | 0.3364     | Close to GRU performance |
+| Deep Learning      | Linear Model                                | Multi-Step Direct (12-step) | 0.3415     | Baseline for neural comparison |
+| Deep Learning      | Simple RNN (Single-Step Recursive)          | Recursive (1-step)          | 0.3547     | Accumulates error recursively |
+| Deep Learning      | GRU (Single-Step Recursive)                 | Recursive (1-step)          | 0.3652     | Higher recursive error |
+| Deep Learning      | Linear Model (Single-Step)                  | Single-Step                 | 0.3486     | Linear baseline for single-step |
+
+---
+
+## Methodology and Architectural Insights
+
+### Data Preparation
+- **Differencing:** Remove trend (`d=1`) and seasonality (`D=1`)  
+- **Scaling:** MinMax scaling after differencing  
+- **Windowing:** 12-month input sequences  
+- **Seasonal Features:** Sine and cosine transformations for multivariate experiments
+
+### Deep Learning Architectural Strategies
+
+**Recursive Multi-Step (Seq2Vec):**  
+- Single-step forecast recursively fed into subsequent steps  
+- Simpler architectures (Simple RNN) mitigate error accumulation  
+
+**Direct Multi-Step (Seq2Seq):**  
+- Predicts all 12 steps simultaneously  
+- GRU models, especially encoder-decoder, eliminate information bottlenecks  
+- Multivariate features slightly improve accuracy
 
 ---
 
 ## Conclusion
 
-This experiment demonstrates two important time series principles:
-
-### 1. Classical Models for Structured Data
-A well-tuned **SARIMA** model remains unbeatable when seasonality and trend are strong.
-
-### 2. Architecture Over Model Choice
-For deep learning:
-
-- **Direct Multi-Step (Seq2Seq)** > **Recursive (Seq2Vec)**
-- GRU achieves its best results only when implemented within a full **Encoder–Decoder** sequence model.
-
-The GRU's Residual MAE of 0.3393 is higher than the Naive Residual MAE of 0.274, indicating that the GRU is currently performing worse than simply assuming no change in temperature.
----
-
-## Model Performance Summary (Mean Absolute Error)
-
-| Model Type     | Architecture               | Prediction Method            | 12-Step MAE | Performance Ranking |
-|----------------|----------------------------|------------------------------|-------------|----------------------|
-| Classical      | Manual ARIMA               | Direct (Statistical)         | **0.2081**  | **1st (Best)**       |
-| Baseline       | Naive Forecast             | Direct                       | 0.2740      | 2nd                  |
-| Classical      | Auto ARIMA                 | Direct (Statistical)         | 0.2923      | 3rd                  |
-| Deep Learning  | GRU (Encoder-Decoder)      | Direct Multi-Step (Seq2Seq)  | 0.3393      | 4th (Best DL)        |
-| Deep Learning  | Simple RNN (Recursive)     | Recursive (Seq2Vec)          | 0.3434      | 5th                  |
-| Deep Learning  | Linear NN (Seq2Seq)        | Direct Multi-Step            | 0.3513      | 6th                  |
-| Deep Learning  | Linear NN                  | Recursive (Seq2Vec)          | 0.3531      | 7th                  |
-| Deep Learning  | Simple RNN (Simple Seq2Seq)| Direct Multi-Step            | 0.3557      | 8th                  |
-| Deep Learning  | GRU (Recursive)            | Recursive (Seq2Vec)          | 0.3674      | 9th                  |
-| Deep Learning  | GRU (Simple Seq2Seq)       | Direct Multi-Step            | 0.3839      | **10th (worst)**     |
+- **Single-Step Forecasting:** Classical ARIMA dominates, leveraging seasonality and trend explicitly.  
+- **Multi-Step Forecasting:** GRUs outperform linear models, capturing long-horizon dependencies and benefiting from seasonal features.  
+- **Model Selection Should Reflect Horizon and Data:** Recursive single-step favors simpler statistical models; direct multi-step favors GRUs with feature-enriched inputs.  
+- **Practical Insight:** Multi-step direct training can outperform recursive single-step training by reducing cumulative error and capturing joint temporal dependencies.
 
 ---
 
-# Methodology and Architectural Insights
-
-## 1. Data Preparation
-
-### Differencing
-To remove trend and seasonality, the temperature series was:
-
-- Differenced once (non-seasonal: `d = 1`)
-- Seasonally differenced once (seasonal: `D = 1`)
-
-ACF/PACF confirmed stationarity after differencing.
-
-### Windowing
-A fixed input window of **12 months** was used for all deep learning models to match the seasonal cycle.
-
----
-
-## 2. Deep Learning Architectural Tests
-
-### A. Recursive Multi-Step Forecasting
-
-**Strategy:**  
-Train the model for `Y[t+1]`, feed prediction back for steps `t+2` to `t+12`.
-
-**Result:**  
-- **Best recursive model:** Simple RNN 
-- Simpler architectures reduce compounding error.
-
----
-
-### B. Direct Multi-Output GRU (Simple Seq2Seq)
-
-**Architecture:**
-
-RNN/GRU → return_sequences=False → Dense(12)
-
-**Limitation:**  
-This created a severe **information bottleneck**, forcing all future steps to be encoded in a single hidden state.
-
----
-
-### C. Sequence-to-Sequence (Encoder–Decoder)
-
-**Architecture:**
-
-GRU → GRU → TimeDistributed(Dense(1))
-
-
-**Success:**  
-- Eliminated the bottleneck  
-- Enabled step-specific prediction  
-- Achieved **best deep learning performance (MAE: 0.3393)**
-
----
-
-# Improvements
-- Run a hyperparameter search for deep learning models to find optimal parameters.
-- Use ensemble technique to see if there will be a improvement
-- Conduct Multivariate time series forecasting by adding features that we think contributes to land temperature.
-- 
-
-# Project Files
+## Project Files
 
 | File | Description |
 |------|-------------|
-| **Time_Series_Forecasting.ipynb** | Main notebook containing data loading, SARIMA analysis, deep learning models, and evaluation. |
+| **Time_Series_Forecasting.ipynb** | Notebook containing data loading, ARIMA analysis, deep learning models, and evaluation |
 
 ---
 
-# Dependencies
+## Dependencies
 
-This project requires:
-
-- Python **3.8+**
-- **TensorFlow / Keras**
-- **NumPy**
-- **Pandas**
-- **Scikit-learn** (scaling, MAE)
-- **Statsmodels** (SARIMA)
-- **pmdarima** (Auto ARIMA)
-
+- Python 3.8+  
+- TensorFlow / Keras  
+- NumPy  
+- Pandas  
+- Scikit-learn  
+- Statsmodels  
+- pmdarima
