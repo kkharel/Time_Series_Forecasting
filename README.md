@@ -33,7 +33,7 @@ Removing compounding error significantly improved deep learning performance:
 
 - **GRU Encoder–Decoder (MAE: 0.3380)** is the best deep learning model.  
 - Predicting all 12 steps at once reduces error accumulation.
-- **Recursive GRU (MAE: 0.4270)** performed the worst, suffering from compounding prediction error.
+- **GRU (Simple Seq2Seq) ** performed the worst, suffering from information bottleneck.
 
 ---
 
