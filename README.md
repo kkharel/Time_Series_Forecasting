@@ -134,7 +134,6 @@ GRU → GRU → TimeDistributed(Dense(1))
 ---
 
 # Improvements
-- We can change the validation strategy. We carried out single holdout period ( fit through 2013 and forecast 2014). Time series need rolling-origin (walk-forward) validation to estimate real world performance and hyperparameter robustness acoss different periods. (e.g., train up to 2000, validate 2001; then train to 2001 validate 2002 and so on then aggregate MAE over folds). This will give us distribution of errors and avoids "lucky" single-cut results.
 - Run a hyperparameter search for deep learning models to find optimal parameters.
 - Use ensemble technique to see if there will be a improvement
 - Conduct Multivariate time series forecasting by adding features that we think contributes to land temperature.
