@@ -88,8 +88,6 @@ The time series was pre-processed using **differencing** to remove trend and sea
 
 ---
 
-### Before concluding, there is a fundamental part missing in this study that is hyperparameter tuning. The immediate next step will be hyperparamter tuning for the best performing NN model
-
 ## Project Files
 
 | File | Description |
