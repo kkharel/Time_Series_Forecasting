@@ -88,7 +88,7 @@ The time series was pre-processed using **differencing** to remove trend and sea
 
 ---
 
-## Note: **Notebook takes almost 8 hours to run on A100 GPU. Do not run multivariate portion with hyperparameter tuning section (most time consumed)**
+### Note: **Notebook takes almost 8 hours to run on A100 GPU. Do not run multivariate portion with hyperparameter tuning section (most time consumed)**
 
 ## Project Files
 
