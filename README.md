@@ -26,13 +26,13 @@ The time series was pre-processed using **differencing** to remove trend and sea
 - Deep learning models trained recursively (RNN/GRU) slightly underperform, as differencing removes the long-term dependencies that GRUs are designed to capture.
 
 ### 2. Multi-Step Direct Forecasting
-- **GRU models (encoder-decoder and last hidden state)** outperform RNNs and linear models for 12-step forecasts.  
+- **GRU models ()** outperform RNNs and linear models for 12-step forecasts.  
 - Surprisingly, multi-step GRUs slightly outperform single-step GRUs because direct multi-step training **reduces cumulative error** and captures joint temporal dependencies.  
 - Simple RNNs remain competitive, showing that simpler recurrent architectures effectively model short-to-medium horizon sequences.
 
 ### 3. Multivariate Features Provide Incremental Gains
 - Including **sine and cosine seasonal features** improves multi-step forecast performance for GRU models.  
-- The multivariate encoder-decoder GRU achieved the **best overall deep learning MAE** (0.3353), slightly better than its univariate counterpart.
+- The multivariate double layer GRU achieved the **best overall deep learning MAE** (0.3353), slightly better than its univariate counterpart.
 
 ### 4. Linear Models vs Neural Networks
 - Linear models perform adequately for single-step predictions but are less effective for multi-step forecasting.  
@@ -47,9 +47,9 @@ The time series was pre-processed using **differencing** to remove trend and sea
 | Classical          | Manual ARIMA                                | Single-Step                 | **0.2081** | Best overall |
 | Baseline           | Naive Forecast                               | Single-Step                 | 0.2740     | Strong simple baseline |
 | Classical          | Auto ARIMA                                   | Single-Step                 | 0.2923     | Statistical baseline |
-| Deep Learning      | GRU (Encoder–Decoder, univariate)           | Multi-Step Direct (12-step) | 0.3363     | Captures horizon dependencies |
-| Deep Learning      | GRU (Encoder–Decoder, multivariate)         | Multi-Step Direct (12-step) | 0.3353     | Best DL with seasonal features |
-| Deep Learning      | GRU (Last Hidden State)                     | Multi-Step Direct (12-step) | 0.3359     | Comparable to encoder-decoder |
+| Deep Learning      | GRU (one layer, univariate)           | Multi-Step Direct (12-step) | 0.3363     | Captures horizon dependencies |
+| Deep Learning      | GRU (multi-layer, multivariate)         | Multi-Step Direct (12-step) | 0.3353     | Best DL with seasonal features |
+| Deep Learning      | GRU (Last Hidden State)                     | Multi-Step Direct (12-step) | 0.3359     | Comparable to multi-layer |
 | Deep Learning      | Simple RNN (Last Hidden State)              | Multi-Step Direct (12-step) | 0.3364     | Close to GRU performance |
 | Deep Learning      | Linear Model                                | Multi-Step Direct (12-step) | 0.3415     | Baseline for neural comparison |
 | Deep Learning      | Simple RNN (Single-Step Recursive)          | Recursive (1-step)          | 0.3547     | Accumulates error recursively |
@@ -74,7 +74,7 @@ The time series was pre-processed using **differencing** to remove trend and sea
 
 **Direct Multi-Step (Seq2Seq):**  
 - Predicts all 12 steps simultaneously  
-- GRU models, especially encoder-decoder, eliminate information bottlenecks  
+- GRU models, especially multi-layer, learns better
 - Multivariate features slightly improve accuracy
 
 ---
