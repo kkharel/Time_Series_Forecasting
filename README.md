@@ -2,6 +2,8 @@
 
 **Author:** Kushal Kharel  
 
+**There is a small title error in the notebook. For sequence to sequence models, it is not encoder - decoder architecture. This is simply multiple GRU layers**
+
 ## Project Overview
 
 This project rigorously evaluates classical statistical and modern deep learning approaches for forecasting Global Land Surface Temperature. The primary goal was a **standardized comparison of 12-step forecast strategies**, across multiple architectures and feature representations.
