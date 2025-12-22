@@ -2,7 +2,7 @@
 
 **Author:** Kushal Kharel  
 
-**There is a small title error in the notebook. For sequence to sequence models, it is not encoder - decoder architecture. This is simply multiple GRU layers**
+**There is an error in the notebook. For sequence to sequence models, it is not encoder - decoder architecture. This is simply multiple GRU layers**
 
 ## Project Overview
 
